@@ -1,0 +1,33 @@
+---
+- hosts: server-lbs
+  remote_user: root
+  tasks:
+    - name: instalar haproxy
+      apt: name=haproxy state=present
+    - name: asegurarnos que haproxy esté ok
+      lineinfile:
+        dest: /etc/default/haproxy
+        regexp: "^ENABLED.+$"
+        line: "ENABLED=1"
+        state: present
+- hosts: server-webs
+  remote_user: root
+  tasks:
+    - name: instalar apache2
+      apt: name=apache2 state=present
+    - name: instalar apache-utils
+      apt: name=apache2-utils state=present
+    - name: habilitar apachemodulos
+      file: 
+        src: "/etc/apache2/mods-available/rewrite.load"
+        dest: "/etc/apache2/mods-enabled/rewrite.load"
+        state: link
+    - name: restart apache2
+      service: name=apache2 state=restarted
+- hosts: server-db
+  remote_user: root
+  tasks:
+    - name: instalar mysql
+      apt: name=mysql-server state=present
+    - name: restart mysql
+      service: name=mysql state=restarted

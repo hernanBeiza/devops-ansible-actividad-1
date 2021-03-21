@@ -1,0 +1,12 @@
+#nodos
+[server-lbs]
+server-lb ansible_host=192.168.33.11
+
+#servidores web
+[server-webs]
+server-web ansible_host=192.168.33.12
+server-web2 ansible_host=192.168.33.13
+
+#base de datos
+[server-db]
+server-db ansible_host=192.168.33.14
